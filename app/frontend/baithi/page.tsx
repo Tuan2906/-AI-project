@@ -8,6 +8,7 @@ import questionsData from "./data.json";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 
+// API để kiểm tra điều kiện thi
 const checkExamEligibility = async (userData: { email: string; hoTen: string; phongBan: string; ngayVaoThi: string }) => {
   const response = await fetch("/api/checkbaithi", {
     method: "POST",
@@ -18,7 +19,7 @@ const checkExamEligibility = async (userData: { email: string; hoTen: string; ph
       email: userData.email,
       hoTen: userData.hoTen,
       phongBan: userData.phongBan,
-      ngayVaoThi: userData.ngayVaoThi, // Gửi thời gian local
+      ngayVaoThi: userData.ngayVaoThi,
     }),
   });
 
@@ -30,6 +31,7 @@ const checkExamEligibility = async (userData: { email: string; hoTen: string; ph
   return response.json();
 };
 
+// API để lưu bài thi
 const submitExam = async (examData: {
   email: string;
   hoTen: string;
@@ -60,10 +62,11 @@ const submitExam = async (examData: {
     throw new Error(errorData.error || "Lỗi khi cập nhật bài thi");
   }
 
-  return response.json();
+  return response.json(); // Giả sử response trả về { examId: "some-id", ... }
 };
 
-const sendCertificateViaApi = async (certificateData: { email: string; recipientName: string; score: number }) => {
+// API để gửi chứng nhận, thêm examId vào request
+const sendCertificateViaApi = async (certificateData: { email: string; recipientName: string; score: number; examId: string }) => {
   const response = await fetch("/api/sendcertificate", {
     method: "POST",
     headers: {
@@ -73,6 +76,7 @@ const sendCertificateViaApi = async (certificateData: { email: string; recipient
       email: certificateData.email,
       recipientName: certificateData.recipientName,
       score: certificateData.score,
+      examId: certificateData.examId, // Thêm examId vào body
     }),
   });
 
@@ -144,10 +148,17 @@ export default function Home() {
     onSuccess: (data) => {
       console.log("Cập nhật bài thi thành công:", data);
       const { score } = calculateResult();
+      // Lấy examId từ response của submitExam
+      const examId = data.examId; // Giả sử response trả về examId
+      if (!examId) {
+        throw new Error("Không nhận được examId từ server");
+      }
+      // Gửi examId cùng với các thông tin khác đến sendCertificate
       sendCertificateMutation.mutate({
         email: userInfo.email,
         recipientName: userInfo.name,
         score: score,
+        examId: examId, // Thêm examId vào đây
       });
     },
     onError: (error) => {
@@ -182,7 +193,7 @@ export default function Home() {
         email: userInfo.email,
         hoTen: userInfo.name,
         phongBan: userInfo.phongBan,
-        ngayVaoThi: localDate.toString(), // Gửi thời gian local dưới dạng chuỗi
+        ngayVaoThi: localDate.toString(),
       });
     }
   };
@@ -220,7 +231,7 @@ export default function Home() {
         dapAn: answers[index] || "",
         dapAnDung: q.correct,
       })),
-      ngayNop: new Date().toString(), // Gửi thời gian local
+      ngayNop: new Date().toString(),
     };
 
     submitMutation.mutate(examData);
@@ -347,18 +358,17 @@ export default function Home() {
               </>
             )}
             {isFullyCompleted && (
-            <div className="flex flex-col items-center gap-3 mt-4"> {/* Sử dụng flex để canh giữa và điều chỉnh khoảng cách */}
-            <Button onClick={() => setShowReview(true)} className="w-full max-w-xs py-2"> {/* Giới hạn chiều rộng và padding */}
-              Xem lại bài làm
-            </Button>
-            <Link href="/login" className="w-full max-w-xs">
-              <Button variant="outline" className="w-full py-2"> {/* Giới hạn chiều rộng và padding */}
-                Quay về trang chủ
-              </Button>
-            </Link>
-          </div>
-          )}
-           
+              <div className="flex flex-col items-center gap-3 mt-4">
+                <Button onClick={() => setShowReview(true)} className="w-full max-w-xs py-2">
+                  Xem lại bài làm
+                </Button>
+                <Link href="/login" className="w-full max-w-xs">
+                  <Button variant="outline" className="w-full py-2">
+                    Quay về trang chủ
+                  </Button>
+                </Link>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
