@@ -1,12 +1,12 @@
-import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
+import prisma from '../../lib/prisma';
 
-const prisma = new PrismaClient();
+
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
     try {
         // Get the exam ID from the URL parameters
-        const baiThiId = params.id;
+        const baiThiId = params?.id;
 
         // Validate the ID
         if (!baiThiId) {
@@ -37,20 +37,9 @@ export async function GET(request: Request, { params }: { params: { id: string }
         }
 
         // Get the employee information
-        const nhanVien = await prisma.nhanVien.findUnique({
-            where: {
-                id: baiThi.nhanVienId,
-            },
-            select: {
-                hoTen: true,
-                email: true,
-            },
-        });
-
+    
         // Prepare the response with only the necessary information
         const result = {
-            hoTen: nhanVien?.hoTen || 'Không tìm thấy',
-            email: nhanVien?.email || 'Không tìm thấy',
             danhSachCauHoi: baiThi.cauHoi,
         };
 
