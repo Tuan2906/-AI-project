@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model User {
+  id                String    @id @default(uuid()) // text, giả sử là UUID ngẫu nhiên
+  email             String    @unique
+  password          String
+  name              String?
+  short_name        String?
+  phone             String?
+  external_auth_id  String?
+  external_auth_issue String?
+  pic_url           String?
+  is_active         Boolean   @default(false)
+  permissions       String[]  // text[]
+  last_activity_date DateTime? // timestamp without time zone
+  updated_on        DateTime? @updatedAt // timestamp without time zone
+  created_on        DateTime? @default(now()) // timestamp without time zone
+  created_by_id     String?
+  updated_by_id     String?
+  settings          Json?     // jsonb
+}
+model NhanVien {
+  id                String    @id @default(uuid())
+  hoTen             String
+  ngaySinh          DateTime?
+  diaChi            String?
+  soDienThoai       String?
+  email             String?   @unique
+  chucVu            String?
+  phongBan          String?
+  ngayVaoLam        DateTime?
+  isActive          Boolean   @default(true)
+  createdOn         DateTime  @default(now())
+  updatedOn         DateTime? @updatedAt
+  createdById       String?
+  updatedById       String?
+}
+model BaiThi {
+  id                String    @id @default(uuid())
+  nhanVienId        String // Liên kết với NhanVien
+  diem              Float // Điểm số (thang 10)
+  ngayVaoThi        DateTime  @default(now()) // Ngày vào thi
+  soCauDung         Int // Số câu đúng
+  createdOn         DateTime  @default(now())
+  updatedOn         DateTime? @updatedAt
+  createdById       String?
+  updatedById       String?
+  cauHoi           Json      // Mảng JSON chứa danh sách câu hỏi
+}

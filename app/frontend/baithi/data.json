@@ -1,0 +1,62 @@
+[
+    {
+      "id": 1,
+      "question": "1+1 bằng bao nhiêu?",
+      "options": ["1", "2", "3", "4"],
+      "correct": "2"
+    },
+    {
+      "id": 2,
+      "question": "Thủ đô của Việt Nam là gì?",
+      "options": ["Hà Nội", "TP.HCM", "Đà Nẵng", "Huế"],
+      "correct": "Hà Nội"
+    },
+    {
+      "id": 3,
+      "question": "Hành tinh nào gần Mặt Trời nhất?",
+      "options": ["Sao Hỏa", "Sao Thủy", "Sao Kim", "Trái Đất"],
+      "correct": "Sao Thủy"
+    },
+    {
+      "id": 4,
+      "question": "1 năm có bao nhiêu ngày?",
+      "options": ["365", "366", "364", "360"],
+      "correct": "365"
+    },
+    {
+      "id": 5,
+      "question": "Màu của bầu trời là gì?",
+      "options": ["Xanh", "Đỏ", "Vàng", "Tím"],
+      "correct": "Xanh"
+    },
+    {
+      "id": 6,
+      "question": "Nước sôi ở bao nhiêu độ C?",
+      "options": ["90", "100", "110", "120"],
+      "correct": "100"
+    },
+    {
+      "id": 7,
+      "question": "Quốc hoa của Việt Nam là gì?",
+      "options": ["Hoa Sen", "Hoa Mai", "Hoa Đào", "Hoa Hồng"],
+      "correct": "Hoa Sen"
+    },
+    {
+      "id": 8,
+      "question": "2 x 3 bằng bao nhiêu?",
+      "options": ["5", "6", "7", "8"],
+      "correct": "6"
+    },
+    {
+      "id": 9,
+      "question": "Trái Đất quay quanh gì?",
+      "options": ["Mặt Trăng", "Mặt Trời", "Sao Hỏa", "Sao Kim"],
+      "correct": "Mặt Trời"
+    },
+    {
+      "id": 10,
+      "question": "Đơn vị đo độ dài là gì?",
+      "options": ["Lít", "Mét", "Kilogram", "Giây"],
+      "correct": "Mét"
+    }
+  ]
