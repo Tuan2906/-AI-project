@@ -1,15 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import questionsData from "./data.json";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 
-// Function to check exam eligibility
-const checkExamEligibility = async (userData: { email: string; hoTen: string }) => {
+const checkExamEligibility = async (userData: { email: string; hoTen: string; phongBan: string; ngayVaoThi: string }) => {
   const response = await fetch("/api/checkbaithi", {
     method: "POST",
     headers: {
@@ -18,6 +17,8 @@ const checkExamEligibility = async (userData: { email: string; hoTen: string }) 
     body: JSON.stringify({
       email: userData.email,
       hoTen: userData.hoTen,
+      phongBan: userData.phongBan,
+      ngayVaoThi: userData.ngayVaoThi, // Gửi thời gian local
     }),
   });
 
@@ -29,13 +30,14 @@ const checkExamEligibility = async (userData: { email: string; hoTen: string }) 
   return response.json();
 };
 
-// Function to submit the exam
 const submitExam = async (examData: {
   email: string;
   hoTen: string;
+  phongBan: string;
   diem: number;
   soCauDung: number;
   cauHoi: any[];
+  ngayNop: string;
 }) => {
   const response = await fetch("/api/saveexam", {
     method: "POST",
@@ -45,25 +47,24 @@ const submitExam = async (examData: {
     body: JSON.stringify({
       email: examData.email,
       hoTen: examData.hoTen,
+      phongBan: examData.phongBan,
       diem: examData.diem,
       soCauDung: examData.soCauDung,
       cauHoi: examData.cauHoi,
-      ngayVaoThi: new Date().toISOString(),
+      ngayNop: examData.ngayNop,
     }),
   });
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.error || "Lỗi khi lưu bài thi");
+    throw new Error(errorData.error || "Lỗi khi cập nhật bài thi");
   }
 
   return response.json();
 };
 
-// Function to send the certificate via the API route
 const sendCertificateViaApi = async (certificateData: { email: string; recipientName: string; score: number }) => {
-  console.log("ccccc", certificateData);
-  const response = await fetch("/api/sendcertificate", { // Fixed the endpoint URL
+  const response = await fetch("/api/sendcertificate", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -84,15 +85,15 @@ const sendCertificateViaApi = async (certificateData: { email: string; recipient
 };
 
 export default function Home() {
-  const [userInfo, setUserInfo] = useState({ name: "", email: "" });
+  const [userInfo, setUserInfo] = useState({ name: "", email: "", phongBan: "" });
   const [isStarted, setIsStarted] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutes (15 * 60 seconds)
-  const [answers, setAnswers] = useState<string[]>(Array(20).fill("")); // 20 questions
+  const [timeLeft, setTimeLeft] = useState(15 * 60);
+  const [answers, setAnswers] = useState<string[]>(Array(20).fill(""));
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showReview, setShowReview] = useState(false);
   const [shuffledQuestions, setShuffledQuestions] = useState<any[]>([]);
   const [eligibilityMessage, setEligibilityMessage] = useState<string>("");
-  const [isFullyCompleted, setIsFullyCompleted] = useState(false); // New state to track completion
+  const [isFullyCompleted, setIsFullyCompleted] = useState(false);
 
   const shuffleArray = (array: any[]) => {
     const shuffled = [...array];
@@ -108,11 +109,11 @@ export default function Home() {
     onSuccess: (data) => {
       if (data.eligible) {
         const shuffled = shuffleArray(questionsData);
-        const selectedQuestions = shuffled.slice(0, 20); // Ensure 20 questions
+        const selectedQuestions = shuffled.slice(0, 20);
         setShuffledQuestions(selectedQuestions);
-        setAnswers(Array(selectedQuestions.length).fill("")); // Initialize answers for 20 questions
+        setAnswers(Array(selectedQuestions.length).fill(""));
         setIsStarted(true);
-        setEligibilityMessage(""); // Clear message on success
+        setEligibilityMessage("");
       } else {
         setEligibilityMessage(
           "Bạn đã thực hiện bài thi trong ngày hôm nay. Vui lòng thử lại vào ngày mai!"
@@ -125,13 +126,12 @@ export default function Home() {
     },
   });
 
-  // Mutation to send the certificate via the API route
   const sendCertificateMutation = useMutation({
     mutationFn: sendCertificateViaApi,
     onSuccess: (data) => {
       console.log("Certificate sent successfully via API:", data);
       setEligibilityMessage("Chứng nhận đã được gửi đến email của bạn!");
-      setIsFullyCompleted(true); // Set completion state to true after success
+      setIsFullyCompleted(true);
     },
     onError: (error) => {
       console.error("Error sending certificate via API:", error.message);
@@ -139,13 +139,11 @@ export default function Home() {
     },
   });
 
-  // Mutation to submit the exam
   const submitMutation = useMutation({
     mutationFn: submitExam,
     onSuccess: (data) => {
-      console.log("Lưu bài thi thành công:", data);
+      console.log("Cập nhật bài thi thành công:", data);
       const { score } = calculateResult();
-      // After successfully saving the exam, trigger the sendCertificate mutation via the API
       sendCertificateMutation.mutate({
         email: userInfo.email,
         recipientName: userInfo.name,
@@ -153,7 +151,7 @@ export default function Home() {
       });
     },
     onError: (error) => {
-      console.error("Lỗi khi lưu bài thi:", error.message);
+      console.error("Lỗi khi cập nhật bài thi:", error.message);
       setEligibilityMessage(`Lỗi: ${error.message}`);
     },
   });
@@ -177,11 +175,14 @@ export default function Home() {
   };
 
   const handleStart = () => {
-    if (userInfo.name && userInfo.email) {
-      setEligibilityMessage(""); // Clear message before checking
+    if (userInfo.name && userInfo.email && userInfo.phongBan) {
+      setEligibilityMessage("");
+      const localDate = new Date();
       checkEligibilityMutation.mutate({
         email: userInfo.email,
         hoTen: userInfo.name,
+        phongBan: userInfo.phongBan,
+        ngayVaoThi: localDate.toString(), // Gửi thời gian local dưới dạng chuỗi
       });
     }
   };
@@ -210,6 +211,7 @@ export default function Home() {
     const examData = {
       email: userInfo.email,
       hoTen: userInfo.name,
+      phongBan: userInfo.phongBan,
       diem: score,
       soCauDung: correctCount,
       cauHoi: shuffledQuestions.map((q, index) => ({
@@ -218,6 +220,7 @@ export default function Home() {
         dapAn: answers[index] || "",
         dapAnDung: q.correct,
       })),
+      ngayNop: new Date().toString(), // Gửi thời gian local
     };
 
     submitMutation.mutate(examData);
@@ -246,12 +249,20 @@ export default function Home() {
                 setUserInfo({ ...userInfo, email: e.target.value })
               }
             />
+            <Input
+              placeholder="Phòng ban"
+              value={userInfo.phongBan}
+              onChange={(e) =>
+                setUserInfo({ ...userInfo, phongBan: e.target.value })
+              }
+            />
             <div className="flex justify-end">
               <Button
                 onClick={handleStart}
                 disabled={
                   !userInfo.name ||
                   !userInfo.email ||
+                  !userInfo.phongBan ||
                   checkEligibilityMutation.isPending
                 }
               >
@@ -310,19 +321,20 @@ export default function Home() {
           <CardContent className="space-y-4">
             <p>Họ tên: {userInfo.name}</p>
             <p>Email: {userInfo.email}</p>
+            <p>Phòng ban: {userInfo.phongBan}</p>
             <p>
               Số câu đúng: {correctCount}/{shuffledQuestions.length}
             </p>
             <p>Điểm: {score.toFixed(1)}</p>
-            {submitMutation.isPending && <p>Đang lưu bài thi...</p>}
+            {submitMutation.isPending && <p>Đang cập nhật bài thi...</p>}
             {submitMutation.isError && (
               <p className="text-red-500">
-                Lỗi: {submitMutation.error?.message || "Không thể lưu bài thi"}
+                Lỗi: {submitMutation.error?.message || "Không thể cập nhật bài thi"}
               </p>
             )}
             {submitMutation.isSuccess && (
               <>
-                <p className="text-green-500">Đã lưu bài thi thành công!</p>
+                <p className="text-green-500">Đã cập nhật bài thi thành công!</p>
                 {sendCertificateMutation.isPending && <p>Đang gửi chứng nhận...</p>}
                 {sendCertificateMutation.isError && (
                   <p className="text-red-500">
@@ -334,30 +346,19 @@ export default function Home() {
                 )}
               </>
             )}
-            {/* Show buttons only when both mutations are successful */}
             {isFullyCompleted && (
-              <div className="space-y-2">
-                <Button onClick={() => setShowReview(true)} className="w-full">
-                  Xem lại bài làm
-                </Button>
-                <Link href="/login">
-                  <Button variant="outline" className="w-full">
-                    Quay về trang chủ
-                  </Button>
-                </Link>
-              </div>
-            )}
-            {eligibilityMessage && (
-              <p
-                className={`text-sm ${
-                  eligibilityMessage.includes("Lỗi")
-                    ? "text-red-500"
-                    : "text-green-500"
-                }`}
-              >
-                {eligibilityMessage}
-              </p>
-            )}
+            <div className="flex flex-col items-center gap-3 mt-4"> {/* Sử dụng flex để canh giữa và điều chỉnh khoảng cách */}
+            <Button onClick={() => setShowReview(true)} className="w-full max-w-xs py-2"> {/* Giới hạn chiều rộng và padding */}
+              Xem lại bài làm
+            </Button>
+            <Link href="/login" className="w-full max-w-xs">
+              <Button variant="outline" className="w-full py-2"> {/* Giới hạn chiều rộng và padding */}
+                Quay về trang chủ
+              </Button>
+            </Link>
+          </div>
+          )}
+           
           </CardContent>
         </Card>
       </div>
@@ -386,17 +387,17 @@ export default function Home() {
                     {q.options.map((option: any, optIndex: any) => {
                       const isSelected = answers[index] === option;
                       const isCorrectAnswer = option === q.correct;
-                      let className = "flex items-center p-2 rounded ";
+                      let className = "flex items-center p-2 rounded cursor-pointer";
                       if (isSelected && isCorrect) {
-                        className += "bg-green-100 border border-green-500";
+                        className += " bg-green-100 border border-green-500";
                       } else if (isSelected && !isCorrect) {
-                        className += "bg-red-100 border border-red-500";
+                        className += " bg-red-100 border border-red-500";
                       } else if (!isSelected && isCorrectAnswer) {
-                        className += "bg-green-100 border border-green-500";
+                        className += " bg-green-100 border border-green-500";
                       }
 
                       return (
-                        <div key={optIndex} className={className}>
+                        <label key={optIndex} className={className}>
                           <input
                             type="radio"
                             name={`question-${index}`}
@@ -405,8 +406,8 @@ export default function Home() {
                             disabled
                             className="mr-2"
                           />
-                          <label>{option}</label>
-                        </div>
+                          <span>{option}</span>
+                        </label>
                       );
                     })}
                   </div>
@@ -444,7 +445,10 @@ export default function Home() {
               </p>
               <div className="space-y-2 mt-2">
                 {q.options.map((option: any, optIndex: any) => (
-                  <div key={optIndex} className="flex items-center">
+                  <label
+                    key={optIndex}
+                    className="flex items-center p-2 rounded cursor-pointer hover:bg-gray-100"
+                  >
                     <input
                       type="radio"
                       name={`question-${index}`}
@@ -454,8 +458,8 @@ export default function Home() {
                       disabled={isSubmitted}
                       className="mr-2"
                     />
-                    <label className="text-gray-700">{option}</label>
-                  </div>
+                    <span>{option}</span>
+                  </label>
                 ))}
               </div>
             </div>

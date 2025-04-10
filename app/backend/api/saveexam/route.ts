@@ -1,53 +1,44 @@
-// app/api/baithi/route.ts
-
 import { NextResponse } from "next/server";
 import prisma from "../../lib/prisma";
-
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, diem, soCauDung, ngayVaoThi, cauHoi, hoTen } = body;
+    const { email, diem, soCauDung, cauHoi,ngayNop } = body;
 
     // Kiểm tra các trường bắt buộc
-    if (!email || diem === undefined || soCauDung === undefined || !hoTen) {
+    if (!email || diem === undefined || soCauDung === undefined) {
       return NextResponse.json(
         {
-          error:
-            "Thiếu các trường bắt buộc: email, diem, soCauDung, hoTen",
+          error: "Thiếu các trường bắt buộc: email, diem, soCauDung",
         },
         { status: 400 }
       );
     }
 
     // Tìm nhân viên dựa trên email
-    let nhanVien = await prisma.nhanVien.findUnique({
+    const nhanVien = await prisma.nhanVien.findUnique({
       where: { email: email },
     });
 
-    // Nếu không tìm thấy nhân viên, tạo nhân viên mới
     if (!nhanVien) {
-      nhanVien = await prisma.nhanVien.create({
-        data: {
-          id: crypto.randomUUID(), // Tạo ID ngẫu nhiên
-          email: email,
-          hoTen: hoTen, // Thêm trường bắt buộc hoTen
-          // Thêm các trường bắt buộc khác nếu có, hoặc để mặc định nếu không bắt buộc
-        },
-      });
+      return NextResponse.json(
+        { error: "Không tìm thấy nhân viên với email này" },
+        { status: 404 }
+      );
     }
 
-    // Kiểm tra xem đã có bài thi nào với nhanVienId tương ứng chưa
+    // Tìm bài thi hiện có dựa trên nhanVienId
     const existingBaiThi = await prisma.baiThi.findFirst({
       where: {
         nhanVienId: nhanVien.id,
       },
     });
 
-    if (existingBaiThi) {
+    if (!existingBaiThi) {
       return NextResponse.json(
-        { error: "Email này đã được sử dụng cho một bài thi khác" },
-        { status: 400 }
+        { error: "Không tìm thấy bài thi cho nhân viên này" },
+        { status: 404 }
       );
     }
 
@@ -63,28 +54,32 @@ export async function POST(request: Request) {
       cauHoiData = cauHoi;
     }
 
-    // Tạo bản ghi BaiThi mới với nhanVienId từ nhân viên
-    const baiThi = await prisma.baiThi.create({
+    // Cập nhật bài thi với các trường được cung cấp
+    const updatedBaiThi = await prisma.baiThi.update({
+      where: {
+        id: existingBaiThi.id, // Dùng id của bài thi để cập nhật
+      },
       data: {
-        nhanVienId: nhanVien.id,
         diem: parseFloat(diem),
         soCauDung: parseInt(soCauDung),
-        ngayVaoThi: ngayVaoThi ? new Date(ngayVaoThi) : new Date(),
+        ngaynop: ngayNop ? new Date(ngayNop) : new Date(), // Dùng giá trị từ body nếu có
         cauHoi: cauHoiData || [],
+        // Các trường khác như ngaynop, createdById, updatedById nếu cần có thể thêm vào đây
+        // Ví dụ: ngaynop: new Date(),
       },
     });
 
     return NextResponse.json(
       {
-        message: "Lưu bài thi thành công",
-        data: { ...baiThi, email: nhanVien.email, hoTen: nhanVien.hoTen }, // Trả về thêm hoTen
+        message: "Cập nhật bài thi thành công",
+        data: { ...updatedBaiThi, email: nhanVien.email, hoTen: nhanVien.hoTen },
       },
-      { status: 201 }
+      { status: 200 }
     );
   } catch (error) {
-    console.error("Lỗi khi lưu bài thi:", error);
+    console.error("Lỗi khi cập nhật bài thi:", error);
     return NextResponse.json(
-      { error: "Có lỗi xảy ra khi lưu bài thi" },
+      { error: "Có lỗi xảy ra khi cập nhật bài thi" },
       { status: 500 }
     );
   } finally {

@@ -51,12 +51,13 @@ model NhanVien {
 model BaiThi {
   id                String    @id @default(uuid())
   nhanVienId        String // Liên kết với NhanVien
-  diem              Float // Điểm số (thang 10)
+  diem              Float? // Điểm số (thang 10)
   ngayVaoThi        DateTime  @default(now()) // Ngày vào thi
-  soCauDung         Int // Số câu đúng
-  createdOn         DateTime  @default(now())
+  ngaynop           DateTime?   // Ngày vào thi
+  soCauDung         Int? // Số câu đúng
+  createdOn         DateTime?  @default(now())
   updatedOn         DateTime? @updatedAt
   createdById       String?
   updatedById       String?
-  cauHoi           Json      // Mảng JSON chứa danh sách câu hỏi
+  cauHoi           Json?      // Mảng JSON chứa danh sách câu hỏi
 }

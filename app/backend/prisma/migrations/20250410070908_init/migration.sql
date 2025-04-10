@@ -45,14 +45,15 @@ CREATE TABLE "NhanVien" (
 CREATE TABLE "BaiThi" (
     "id" TEXT NOT NULL,
     "nhanVienId" TEXT NOT NULL,
-    "diem" DOUBLE PRECISION NOT NULL,
+    "diem" DOUBLE PRECISION,
     "ngayVaoThi" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "soCauDung" INTEGER NOT NULL,
-    "createdOn" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "ngaynop" TIMESTAMP(3),
+    "soCauDung" INTEGER,
+    "createdOn" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedOn" TIMESTAMP(3),
     "createdById" TEXT,
     "updatedById" TEXT,
-    "cauHoi" JSONB NOT NULL,
+    "cauHoi" JSONB,
 
     CONSTRAINT "BaiThi_pkey" PRIMARY KEY ("id")
 );

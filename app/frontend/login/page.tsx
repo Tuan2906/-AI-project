@@ -20,6 +20,9 @@ export default async function LoginPage() {
         <Link href="/baithi">
           <Button>Thi AI</Button>
         </Link>
+        <Link href="/theodoibaithi">
+              <Button variant="outline">Theo dõi bài thi</Button>
+            </Link>
       </nav>
     </header>
       <Form />

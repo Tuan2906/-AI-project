@@ -163,6 +163,17 @@ export function AppSidebar({
   user: User;
   onItemClick: (url: string) => void; // Định nghĩa kiểu cho onItemClick
 }) {
+  const showQuanLyBaiThi = user.email === 'tuan.chau.nguyen@vnfoods.vn';
+  const appItems = showQuanLyBaiThi
+    ? [
+        ...data.App,
+        {
+          name: 'Quản lý bài thi',
+          url: '/quan-ly-bai-thi',
+          icon: FileTextIcon,
+        },
+      ]
+    : data.App;
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -182,7 +193,7 @@ export function AppSidebar({
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavDocuments items={data.App} onItemClick={onItemClick} /> {/* Truyền onItemClick */}
+        <NavDocuments items={appItems} onItemClick={onItemClick} /> {/* Truyền onItemClick */}
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

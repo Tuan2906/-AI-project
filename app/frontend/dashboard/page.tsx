@@ -10,6 +10,7 @@ import { SiteHeader } from '../components/site-header';
 import { ChartAreaInteractive } from '../components/chart-area-interactive';
 import { SectionCards } from '../components/section-cards';
 import TranscriptVideo from '../transcript-video/page';
+import QuanLyBaiThi from '../baithi/quanlybaithi';
 
 // Hàm phân tích JWT token
 function parseJwt(token: string) {
@@ -41,7 +42,11 @@ export default function DashboardPage() {
       setCurrentView('reports');
     } else if (url === '/word-assistant') {
       setCurrentView('word-assistant');
-    } else {
+    }
+    else if (url === '/quan-ly-bai-thi') {
+      setCurrentView('quan-ly-bai-thi');
+    } 
+    else {
       setCurrentView('dashboard');
     }
   };
@@ -87,6 +92,8 @@ export default function DashboardPage() {
         return 'Reports';
       case 'word-assistant':
         return 'Word Assistant';
+      case 'quan-ly-bai-thi': // Thêm tiêu đề cho Quản lý bài thi
+        return 'Quản lý bài thi';
       default:
         return 'Documents';
     }
@@ -94,6 +101,7 @@ export default function DashboardPage() {
 
   // Render nội dung dựa trên view hiện tại
   const renderContent = () => {
+    console.log("dadddasda", currentView);
     switch (currentView) {
       case 'dashboard':
         return (
@@ -110,6 +118,8 @@ export default function DashboardPage() {
         );
       case 'transcript-video':
         return <TranscriptVideo />;
+      case 'quan-ly-bai-thi': // Thêm case cho Quản lý bài thi
+        return <QuanLyBaiThi />;
       case 'reports':
         return (
           <div className="flex flex-1 flex-col p-4">
@@ -117,6 +127,7 @@ export default function DashboardPage() {
             <p>Chào mừng đến với trang Báo cáo!</p>
           </div>
         );
+      
       case 'word-assistant':
         return (
           <div className="flex flex-1 flex-col p-4">

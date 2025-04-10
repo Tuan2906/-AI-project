@@ -16,95 +16,173 @@ const validateEmail = (email: string): boolean => {
 
 // HTML email template for the certificate
 const generateCertificateEmailTemplate = (recipientName: string, score: number): string => {
-  return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <style>
-        .certificate {
-          border: 4px double #2c3e50;
-          padding: 30px;
-          max-width: 700px;
-          margin: 20px auto;
-          font-family: 'Georgia', serif;
-          text-align: center;
-          background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-          border-radius: 10px;
-        }
-        .header {
-          font-size: 32px;
-          font-weight: bold;
-          color: #2c3e50;
-          margin-bottom: 10px;
-          text-transform: uppercase;
-          letter-spacing: 2px;
-        }
-        .date {
-          font-size: 16px;
-          color: #555;
-          margin-bottom: 20px;
-          font-style: italic;
-        }
-        .recipient {
-          font-size: 36px;
-          font-weight: bold;
-          color: #1a3c34;
-          margin: 20px 0;
-          text-transform: capitalize;
-          border-bottom: 2px solid #1a3c34;
-          display: inline-block;
-          padding-bottom: 5px;
-        }
-        .course {
-          font-size: 20px;
-          color: #333;
-          margin: 10px 0;
-          line-height: 1.5;
-        }
-        .score {
-          font-size: 24px;
-          color: #d35400;
-          margin: 15px 0;
-          font-weight: bold;
-          background: #fff3e0;
-          padding: 10px;
-          border-radius: 5px;
-          display: inline-block;
-        }
-        .issuer {
-          font-size: 16px;
-          color: #7f8c8d;
-          margin-top: 20px;
-          font-style: italic;
-        }
-        .signature {
-          margin-top: 30px;
-          font-size: 18px;
-          color: #2980b9;
-          font-style: italic;
-          border-top: 1px solid #2980b9;
-          padding-top: 10px;
-          display: inline-block;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="certificate">
-        <div class="header">AI Certificate</div>
-        <p class="date">${new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</p>
-        <div class="recipient">${recipientName}</div>
-        <div class="course">has successfully completed Session 2 of the course</div>
-        <div class="course">Utilized ChatGPT for creating marketing content and partner emails</div>
-        <div class="course">Utilized ChatGPT for generating images, videos, and extracting subtitles</div>
-        <div class="score">Score: ${score.toFixed(1)} / 10</div>
-        <div class="issuer">Issued by</div>
-        <div class="signature">Công ty Cổ Phần Việt Nam Food<br>Team AI</div>
-      </div>
-    </body>
-    </html>
-  `;
-};
+    return `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          .certificate {
+            border: 4px double #2c3e50;
+            padding: 30px;
+            max-width: 700px;
+            margin: 20px auto;
+            font-family: 'Georgia', serif;
+            text-align: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            position: relative;
+          }
+          .certificate::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: -30px;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(44, 62, 80, 0.2), transparent);
+            opacity: 0.3;
+          }
+          .certificate::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(44, 62, 80, 0.2), transparent);
+            opacity: 0.3;
+          }
+          .logo {
+            margin-bottom: 20px;
+          }
+          .logo img {
+            max-width: 120px;
+            height: auto;
+            border-radius: 50%;
+            border: 2px solid #2c3e50;
+            padding: 5px;
+            background: #fff;
+          }
+          .header {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+          }
+          .header::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #2c3e50, transparent);
+          }
+          .date {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+            font-style: italic;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 5px 15px;
+            border-radius: 5px;
+          }
+          .recipient {
+            font-size: 36px;
+            font-weight: bold;
+            color: #1a3c34;
+            margin: 20px 0;
+            text-transform: capitalize;
+            border-bottom: 2px solid #1a3c34;
+            display: inline-block;
+            padding-bottom: 5px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 5px 20px;
+            border-radius: 5px;
+          }
+          .course {
+            font-size: 20px;
+            color: #333;
+            margin: 10px 0;
+            line-height: 1.5;
+            padding: 5px 15px;
+            background: rgba(255, 255, 255, 0.3);
+            border-left: 3px solid #2c3e50;
+            border-radius: 3px;
+          }
+          .score {
+            font-size: 24px;
+            color: #d35400;
+            margin: 15px 0;
+            font-weight: bold;
+            background: #fff3e0;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            border: 1px dashed #d35400;
+          }
+          .issuer {
+            font-size: 16px;
+            color: #7f8c8d;
+            margin-top: 20px;
+            font-style: italic;
+            padding: 5px 15px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 5px;
+          }
+          .signature {
+            margin-top: 30px;
+            font-size: 18px;
+            color: #2980b9;
+            font-style: italic;
+            border-top: 1px solid #2980b9;
+            padding-top: 10px;
+            display: inline-block;
+            position: relative;
+          }
+          .signature::before {
+            content: '✦';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #2980b9;
+            font-size: 14px;
+          }
+          .signature::after {
+            content: '✦';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #2980b9;
+            font-size: 14px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="certificate">
+          <div class="logo">
+            <img src="https://cdn-icons-png.flaticon.com/512/1200/1200714.png" alt="Achievement Badge">
+          </div>
+          <div class="header">Test Result</div>
+          <p class="date">${new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</p>
+          <div class="recipient">${recipientName}</div>
+          <div class="course">Congratulations! You have successfully completed the Session 2 assessment of the Basic ChatGPT Training Program.</div>
+          <div class="score">Score: ${score.toFixed(1)} / 10</div>
+          <div class="issuer">Issued by</div>
+          <div class="signature">Công ty Cổ Phần Việt Nam Food<br>Team AI</div>
+        </div>
+      </body>
+      </html>
+    `;
+  };
 
 export async function POST(request: Request) {
   try {
