@@ -72,7 +72,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         message: "Cập nhật bài thi thành công",
-        data: { ...updatedBaiThi, email: nhanVien.email, hoTen: nhanVien.hoTen },
+        examId: updatedBaiThi.id
       },
       { status: 200 }
     );

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import prisma from '../../lib/prisma';
+import prisma from '../../../lib/prisma';
 
 
 
@@ -7,7 +7,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
     try {
         // Get the exam ID from the URL parameters
         const baiThiId = params?.id;
-
+        
         // Validate the ID
         if (!baiThiId) {
             return NextResponse.json({

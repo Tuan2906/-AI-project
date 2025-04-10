@@ -27,13 +27,14 @@ export async function GET() {
                 id: true,
                 hoTen: true,
                 email: true,
+                phongBan: true,
             },
         });
 
         // Khai báo kiểu cho nhanVienMap
-        const nhanVienMap: { [key: string]: { hoTen: string; email: string | null } } = danhSachNhanVien.reduce(
-            (map: { [key: string]: { hoTen: string; email: string | null } }, nv) => {
-                map[nv.id] = { hoTen: nv.hoTen, email: nv.email }; // Không còn lỗi
+        const nhanVienMap: { [key: string]: { hoTen: string; email: string | null,phongBan: string | null } } = danhSachNhanVien.reduce(
+            (map: { [key: string]: { hoTen: string; email: string | null, phongBan: string | null } }, nv) => {
+                map[nv.id] = { hoTen: nv.hoTen, email: nv.email, phongBan: nv.phongBan }; // Không còn lỗi
                 return map;
             },
             {}
@@ -42,11 +43,13 @@ export async function GET() {
         const result = danhSachBaiThi.map((baiThi) => ({
             hoTen: nhanVienMap[baiThi.nhanVienId]?.hoTen || 'Không tìm thấy',
             email: nhanVienMap[baiThi.nhanVienId]?.email || 'Không tìm thấy',
+            phongBan: nhanVienMap[baiThi.nhanVienId]?.phongBan || 'Không tìm thấy',
             diemSo: baiThi.diem,
             soCauDung: baiThi.soCauDung,
             noiDungBaiThi: baiThi.cauHoi,
             ngayThi: baiThi.ngayVaoThi,
             ngayNop: baiThi.ngaynop,
+
         }));
 
         return NextResponse.json({

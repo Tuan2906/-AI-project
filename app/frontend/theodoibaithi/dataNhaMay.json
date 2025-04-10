@@ -1,0 +1,22 @@
+[
+    {"name": "Quản Hồng Thìn", "phong ban": "BGĐNMCM", "email": "tuan.c.nguyen@vnfoods.vn"},
+    {"name": "Lâm Hoàng Duy", "phong ban": "CT_ED_SB", "email": "duy.h.lam@vnfoods.vn"},
+    {"name": "Nguyễn Văn Võ", "phong ban": "ĐHSX", "email": "vo.v.nguyen@vnfoods.vn"},
+    {"name": "Phạm Thị Dinh", "phong ban": "KẾ TOÁN", "email": "dinh.t.pham@vnfoods.vn"},
+    {"name": "Nguyễn Phú Cường", "phong ban": "Kho Vận", "email": "cuong.p.nguyen@vnfoods.vn"},
+    {"name": "Lê Khắc Nghiêm", "phong ban": "KSCL", "email": "nghiem.k.le@vnfoods.vn"},
+    {"name": "Bùi Vũ Hiệp", "phong ban": "KSCL", "email": "hiep.v.bui@vnfoods.vn"},
+    {"name": "Đỗ Quang Đại", "phong ban": "KSCL Nhà Máy Cà Mau", "email": "dai.q.do@vnfoods.vn"},
+    {"name": "Vương Chí Hải", "phong ban": "KỸ THUẬT CƠ ĐIỆN", "email": "hai.c.vuong@vnfoods.vn"},
+    {"name": "Hà Thanh Tỏ", "phong ban": "KỸ THUẬT CƠ ĐIỆN", "email": "to.t.ha@vnfoods.vn"},
+    {"name": "Niệm Đỗ", "phong ban": "QLCL", "email": "niem.h.do@vnfoods.vn"},
+    {"name": "Nguyễn Văn Sáng", "phong ban": "QLCL", "email": "sang.v.nguyen@vnfoods.vn"},
+    {"name": "Mai Trung Băng", "phong ban": "QLCL", "email": "bang.t.mai@vnfoods.vn"},
+    {"name": "Đỗ Khắc Huy", "phong ban": "SSE-SSH-CTO", "email": "huy.k.do@vnfoods.vn"},
+    {"name": "Đoàn Giang Sang", "phong ban": "BGĐ NMHG", "email": "sang.g.doan@vnfoods.vn"},
+    {"name": "Phạm Ngọc Lành", "phong ban": "Kế toán", "email": "lanh.n.pham@vnfoods.vn"},
+    {"name": "Vương Chí Khầu", "phong ban": "KHCU", "email": "khau.c.vuong@vnfoods.vn"},
+    {"name": "Nguyễn Văn Pha", "phong ban": "Kho vận", "email": "pha.v.nguyen@vnfoods.vn"},
+    {"name": "Nguyễn Thị Sơn Ca", "phong ban": "KSCL", "email": "ca.s.nguyen@vnfoods.vn"},
+    {"name": "Trần Trọng Nghỉa", "phong ban": "KTCĐ", "email": "nghia.t.tran@vnfoods.vn"}
+]

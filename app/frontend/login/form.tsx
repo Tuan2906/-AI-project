@@ -87,7 +87,8 @@ export default function Form() {
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600 max-w">
           Or{' '} {/* Khoảng trắng */}
-          <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500">
+          {/* /register */}
+          <Link href="#" className="font-medium text-blue-600 hover:text-blue-500">
             create an account
           </Link>
         </p>
@@ -187,62 +188,41 @@ export default function Form() {
           </form> {/* Kết thúc form */}
 
           {/* Phần phân cách "Or continue with" */}
-          <div className="mt-6"> {/* Khoảng cách phía trên */}
-            <div className="relative"> {/* Container tương đối để định vị đường kẻ */}
-              <div className="absolute inset-0 flex items-center"> {/* Container tuyệt đối để chứa đường kẻ */}
-                <div className="w-full border-t border-gray-300"></div> {/* Đường kẻ ngang */}
+
+          {/* Phần các nút đăng nhập mạng xã hội */}
+          <div className="mt-6">
+            <div className="relative">
+              {/* Container tương đối để định vị đường kẻ */}
+              <div className="absolute inset-0 flex items-center">
+                {/* Container tuyệt đối để chứa đường kẻ */}
+                <div className="w-full border-t border-gray-300"></div>
               </div>
-              <div className="relative flex justify-center text-sm"> {/* Container tương đối cho text, căn giữa */}
-                <span className="px-2 bg-white text-gray-500">Or continue with</span> {/* Text với background trắng để che đường kẻ */}
+              <div className="relative flex justify-center text-sm">
+                {/* Container tương đối cho text, căn giữa */}
+                <span className="px-2 bg-white text-gray-500">Or continue with</span>
               </div>
             </div>
 
-            {/* Phần các nút đăng nhập mạng xã hội */}
-            <div className="mt-6 grid grid-cols-3 gap-3"> {/* Grid 3 cột với khoảng cách */}
-              {/* Nút Facebook */}
+            <div className="mt-6">
               <div>
                 <a
                   href="#" // Thay đổi link nếu cần
-                  // Style chung cho các nút social
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                  className="w-full inline-flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                 >
-                  <span className="sr-only">Sign in with Facebook</span> {/* Cho screen reader */}
-                  {/* Icon Facebook */}
-                  <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M20 10c0-5.523-4.477-10-10-10S0 4.477 0 10c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V10h2.54V7.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V10h2.773l-.443 2.89h-2.33v6.988C16.343 19.128 20 14.991 20 10z" clipRule="evenodd" />
-                  </svg>
+                  {/* Icon Google (SVG mới, đơn giản và không lỗi font) */}
+                  {/* <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.111.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.333-1.754-1.333-1.754-1.09-.745.083-.729.083-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.605-2.665-.305-5.466-1.332-5.466-5.93 0-1.31.467-2.381 1.235-3.221-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23.957-.266 1.98-.399 3-.405 1.02.006 2.043.139 3 .405 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.873.12 3.176.77.84 1.234 1.911 1.234 3.221 0 4.61-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .319.216.694.825.576C20.565 21.795 24 17.298 24 12 24 5.373 18.627 0 12 0z"
+                      fill="#4285F4"
+                    />
+                  </svg> */}
+                  {/* Tên "Sign in with Google" hiển thị bên cạnh icon */}
+                  <span>Sign in with Google</span>
                 </a>
               </div>
+            </div>
+          </div>
 
-              {/* Nút Twitter */}
-              <div>
-                <a
-                  href="#" // Thay đổi link nếu cần
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-                >
-                  <span className="sr-only">Sign in with Twitter</span>
-                  {/* Icon Twitter */}
-                  <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
-                  </svg>
-                </a>
-              </div>
-
-              {/* Nút Google */}
-              <div>
-                <a
-                  href="#" // Thay đổi link nếu cần
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-                >
-                  <span className="sr-only">Sign in with Google</span>
-                  {/* Icon Google (Simple version) */}
-                  <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 0C4.477 0 0 4.477 0 10c0 4.418 2.865 8.147 6.839 9.489l.011-.003.017-.005a9.93 9.93 0 001.637-.407 9.935 9.935 0 003.06-.182c.9-.22 1.72-.545 2.47-.957a10.02 10.02 0 003.132-3.132c.412-.75.737-1.57.957-2.47a9.935 9.935 0 00.182-3.06 9.93 9.93 0 00.407-1.637l.005-.017.003-.011A9.954 9.954 0 0020 10c0-5.523-4.477-10-10-10zm5.33 11.139H10v-2.278h5.33c.08.43.12.879.12 1.339 0 3.132-2.12 5.33-5.45 5.33-3.04 0-5.51-2.47-5.51-5.51s2.47-5.51 5.51-5.51c1.4 0 2.64.53 3.6.1.43l1.75-1.68c-1.17-1.1-2.75-1.78-4.55-1.78-3.78 0-6.85 3.07-6.85 6.85s3.07 6.85 6.85 6.85c3.97 0 6.63-2.82 6.63-6.71 0-.49-.05-.95-.12-1.38z" clipRule="evenodd" />
-                  </svg>
-                </a>
-              </div>
-            </div> {/* Kết thúc grid các nút social */}
-          </div> {/* Kết thúc phần phân cách và social */}
         </div> {/* Kết thúc thẻ chứa form */}
       </div> {/* Kết thúc container thẻ form */}
     </div> // Kết thúc container toàn trang
