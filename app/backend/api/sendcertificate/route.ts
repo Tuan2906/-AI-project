@@ -115,7 +115,6 @@ const generateCertificateEmailTemplate = (recipientName: string, score: number, 
           line-height: 1.5;
           padding: 5px 15px;
           background: rgba(255, 255, 255, 0.3);
-          border-left: 3px solid #2c3e50;
           border-radius: 3px;
         }
         .score {
