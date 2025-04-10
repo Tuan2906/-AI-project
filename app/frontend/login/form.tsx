@@ -88,7 +88,7 @@ export default function Form() {
         <p className="mt-2 text-center text-sm text-gray-600 max-w">
           Or{' '} {/* Khoảng trắng */}
           {/* /register */}
-          <Link href="#" className="font-medium text-blue-600 hover:text-blue-500">
+          <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500">
             create an account
           </Link>
         </p>

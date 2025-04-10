@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function GET() {
+export async function POST() {
     try {
         const danhSachBaiThi = await prisma.baiThi.findMany({
             select: {
