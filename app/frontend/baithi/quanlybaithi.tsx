@@ -22,11 +22,17 @@ type BaiThi = {
 };
 
 const fetchDanhSachBaiThi = async (): Promise<BaiThi[]> => {
-    const res = await fetch('/api/listbaithi');
+    const res = await fetch('/api/listbaithi', {
+        method: 'POST', // Sử dụng POST thay vì GET
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}), // Bạn có thể thêm payload nếu API yêu cầu
+    });
     if (!res.ok) throw new Error('Lỗi khi lấy danh sách bài thi');
-    const data = await res.json();
-    return data.data;
+    return (await res.json()).data;
 };
+
 
 export default function QuanLyBaiThi() {
     console.log("voii   ");
@@ -38,6 +44,9 @@ export default function QuanLyBaiThi() {
     const { data: danhSachBaiThi, isLoading, error } = useQuery({
         queryKey: ['danhSachBaiThi'],
         queryFn: fetchDanhSachBaiThi,
+        refetchInterval: 1000, // Cập nhật mỗi 1 giây
+        refetchOnWindowFocus: false, // Không refetch khi focus lại
+        staleTime: 0, // Dữ liệu luôn được coi là "stale" để refetch ngay
     });
 
     const handleDownloadExcel = async () => {
