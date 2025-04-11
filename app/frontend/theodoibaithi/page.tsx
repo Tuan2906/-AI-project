@@ -251,7 +251,7 @@ export default function TheoDoiBaiThi() {
                         className={`px-4 py-2 ${activeTab === 'nhanVien' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
                         onClick={() => setActiveTab('nhanVien')}
                     >
-                        Nhân Viên Công Ty
+                        VP2A & TTNC
                     </button>
                     <button
                         className={`px-4 py-2 ${activeTab === 'nhaMay' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
