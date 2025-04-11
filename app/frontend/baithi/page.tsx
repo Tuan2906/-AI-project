@@ -240,34 +240,46 @@ export default function Home() {
   if (!isStarted) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-[400px]">
-          <CardHeader>
-            <CardTitle>Thông tin thí sinh</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Input
-              placeholder="Họ và tên"
-              value={userInfo.name}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, name: e.target.value })
-              }
-            />
-            <Input
-              placeholder="Email"
-              type="email"
-              value={userInfo.email}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, email: e.target.value })
-              }
-            />
-            <Input
-              placeholder="Phòng ban"
-              value={userInfo.phongBan}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, phongBan: e.target.value })
-              }
-            />
-            <div className="flex justify-end">
+        <Card className="w-[400px] flex flex-col items-center">
+          <CardContent className="w-full flex flex-col items-center space-y-4 pt-6">
+            {/* Logo centered at the top */}
+            <div className="flex justify-center">
+              <img
+                src="https://www.vnfoods.vn/wp-content/themes/tm-organik/assets/images/logo_dark.png"
+                alt="Logo"
+                className="h-16 w-auto" // Adjust height as needed
+              />
+            </div>
+            {/* Candidate information below logo */}
+            <div className="w-full max-w-xs flex flex-col items-center space-y-4">
+              <CardHeader className="w-full text-center p-0">
+                <CardTitle>AI Training Test</CardTitle>
+              </CardHeader>
+              <Input
+                placeholder="Họ và tên"
+                value={userInfo.name}
+                onChange={(e) =>
+                  setUserInfo({ ...userInfo, name: e.target.value })
+                }
+                className="w-full"
+              />
+              <Input
+                placeholder="Email"
+                type="email"
+                value={userInfo.email}
+                onChange={(e) =>
+                  setUserInfo({ ...userInfo, email: e.target.value })
+                }
+                className="w-full"
+              />
+              <Input
+                placeholder="Phòng ban"
+                value={userInfo.phongBan}
+                onChange={(e) =>
+                  setUserInfo({ ...userInfo, phongBan: e.target.value })
+                }
+                className="w-full"
+              />
               <Button
                 onClick={handleStart}
                 disabled={
@@ -276,11 +288,12 @@ export default function Home() {
                   !userInfo.phongBan ||
                   checkEligibilityMutation.isPending
                 }
+                className="w-full"
               >
                 {checkEligibilityMutation.isPending ? (
-                  <span>
+                  <span className="flex items-center">
                     <svg
-                      className="animate-spin h-5 w-5 mr-2 inline-block"
+                      className="animate-spin h-5 w-5 mr-2"
                       viewBox="0 0 24 24"
                     >
                       <circle
@@ -303,18 +316,18 @@ export default function Home() {
                   "Vào thi"
                 )}
               </Button>
+              {eligibilityMessage && (
+                <p
+                  className={`text-sm text-center w-full ${
+                    eligibilityMessage.includes("Lỗi")
+                      ? "text-red-500"
+                      : "text-yellow-600"
+                  }`}
+                >
+                  {eligibilityMessage}
+                </p>
+              )}
             </div>
-            {eligibilityMessage && (
-              <p
-                className={`text-sm ${
-                  eligibilityMessage.includes("Lỗi")
-                    ? "text-red-500"
-                    : "text-yellow-600"
-                }`}
-              >
-                {eligibilityMessage}
-              </p>
-            )}
           </CardContent>
         </Card>
       </div>
@@ -362,7 +375,7 @@ export default function Home() {
                 <Button onClick={() => setShowReview(true)} className="w-full max-w-xs py-2">
                   Xem lại bài làm
                 </Button>
-                <Link href="/login" className="w-full max-w-xs">
+                <Link href="/baithi" className="w-full max-w-xs">
                   <Button variant="outline" className="w-full py-2">
                     Quay về trang chủ
                   </Button>

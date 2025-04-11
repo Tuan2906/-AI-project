@@ -17,6 +17,7 @@ const validateEmail = (email: string): boolean => {
 };
 
 // HTML email template for the certificate
+
 const generateCertificateEmailTemplate = (recipientName: string, score: number, examId: string): string => {
   return `
     <!DOCTYPE html>
@@ -159,10 +160,14 @@ const generateCertificateEmailTemplate = (recipientName: string, score: number, 
           font-size: 18px;
           color: #2980b9;
           font-style: italic;
-          border-top: 1px solid #2980b9;
           padding-top: 10px;
           display: inline-block;
           position: relative;
+        }
+        .signature img {
+          max-width: 100px;
+          height: auto;
+          margin-top: 10px;
         }
         .signature::before {
           content: '✦';
@@ -198,13 +203,15 @@ const generateCertificateEmailTemplate = (recipientName: string, score: number, 
           <a href="https://ai-project-git-main-tuan2906s-projects.vercel.app/reviewbaithi/${examId}" target="_blank">Review your work</a>
         </div>
         <div class="issuer">Issued by</div>
-        <div class="signature">Việt Nam Food Company.<br>Team AI</div>
+        <div class="signature">
+          <img src="https://www.vnfoods.vn/wp-content/themes/tm-organik/assets/images/logo_dark.png" alt="Signature Logo">
+          Việt Nam Food Company. Team AI<br>
+        </div>
       </div>
     </body>
     </html>
   `;
 };
-
 export async function POST(request: Request) {
   try {
     // Parse request body

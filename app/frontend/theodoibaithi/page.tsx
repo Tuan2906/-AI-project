@@ -46,6 +46,7 @@ const renderTable = (data: NhanVien[], title: string) => (
             <table className="w-full border-collapse border">
                 <thead>
                     <tr className="bg-gray-200">
+                        <th className="border p-2">STT</th>
                         <th className="border p-2">Họ và Tên</th>
                         <th className="border p-2">Phòng Ban</th>
                         <th className="border p-2">Email</th>
@@ -58,6 +59,7 @@ const renderTable = (data: NhanVien[], title: string) => (
                 <tbody>
                     {data.map((item, index) => (
                         <tr key={index} className="hover:bg-gray-100">
+                            <td className="border p-2 valign-middle text-center">{index + 1}</td>
                             <td className="border p-2">{item.name}</td>
                             <td className="border p-2">{item.phongBan}</td>
                             <td className="border p-2">{item.email || 'Không có email'}</td>
