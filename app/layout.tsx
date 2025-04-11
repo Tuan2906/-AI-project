@@ -10,7 +10,7 @@ import Providers from './providers'; // Import the new Providers component
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Transcript Video',
+  title: 'AI Exam',
   description: 'A hub for Next.js development resources',
   icons: {
     icon: '/favicon.ico',
